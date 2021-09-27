@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#***************************************************
 
 
 resource "google_container_cluster" "primary" {
@@ -36,6 +37,10 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
   location   = var.k8s_pool_location
   cluster    = google_container_cluster.primary.name
   node_count = var.k8s_pool_node_count
+  autoscaling {
+    min_node_count = var.k8s_min_node_count
+    max_node_count = var.k8s_max_node_count
+  }
   node_config {
     preemptible  = var.k8s_pool_preemptible
     machine_type = var.k8s_pool_machine_type
